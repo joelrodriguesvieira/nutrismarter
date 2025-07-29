@@ -1,4 +1,4 @@
-// src/screens/InitialScreen.tsx
+import { LogoNutriSmarter } from "@/components/Logo";
 import React from "react";
 import {
   Image,
@@ -29,10 +29,7 @@ export default function InitialScreen() {
       </View>
 
       <View style={styles.footer}>
-        <Text style={styles.brand}>
-          Nutri
-          <Text style={styles.brandSmarter}>Smarter</Text>
-        </Text>
+        <LogoNutriSmarter />
         <Text style={styles.footerText}>Todos os direitos reservados.</Text>
       </View>
     </SafeAreaView>
@@ -41,7 +38,7 @@ export default function InitialScreen() {
 
 const styles = StyleSheet.create({
   container: {
-    fontFamily: 'InterLigth',
+    fontFamily: "InterLigth",
     flex: 1,
     backgroundColor: "#fff",
   },
@@ -78,14 +75,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginTop: "auto",
     marginBottom: 20,
-  },
-  brand: {
-    fontSize: 16,
-    color: "#222",
-  },
-  brandSmarter: {
-    color: "#FF6B00",
-    fontWeight: "bold",
   },
   footerText: {
     fontSize: 12,
