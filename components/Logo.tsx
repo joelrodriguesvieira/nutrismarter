@@ -1,7 +1,8 @@
+import colors from "@/app/constants/colors";
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 
-export const LogoNutriSmarter = () => {
+export default function LogoNutriSmarter() {
   return (
     <View>
       <Text style={styles.brand}>
@@ -15,10 +16,10 @@ export const LogoNutriSmarter = () => {
 const styles = StyleSheet.create({
   brand: {
     fontSize: 16,
-    color: "#222",
+    color: colors.grayStrong,
   },
   brandSmarter: {
-    color: "#FF6B00",
+    color: colors.orangePrimary,
     fontWeight: "bold",
   },
 });
