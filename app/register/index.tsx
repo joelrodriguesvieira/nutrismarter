@@ -1,16 +1,40 @@
 import LogoNutriSmarter from "@/components/Logo";
 import { useNavigation } from "@react-navigation/native";
-import {
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { useState } from "react";
+import { Text, TextInput, TouchableOpacity, View } from "react-native";
 import colors from "../constants/colors";
+import { useUser } from "../contexts/useContext";
+import { styles } from "./register.style";
 
 export default function Register() {
+  const {
+    userName,
+    userEmail,
+    userPassword,
+    setUserName,
+    setUserEmail,
+    setUserPassword,
+  } = useUser();
   const navigation = useNavigation();
+  const [confirmPassword, setConfirmPassword] = useState<string>("");
+  const [error, setError] = useState<string>("");
+
+  const handleSubmit = () => {
+    // deixar sem nenhuma validacao por enquanto
+    // setError("");
+    // if (!userEmail || !userName || !userPassword) {
+    //   setError("Preencha todos os campos");
+    //   return;
+    // }
+
+    // if (confirmPassword !== userPassword) {
+    //   setError("Digite a mesma senha em ambos os campos");
+    //   return;
+    // }
+
+    // adicionar logica para a pagina 3
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.headerForm}>
@@ -22,27 +46,35 @@ export default function Register() {
         <TextInput
           placeholder="E-mail"
           style={styles.input}
-          placeholderTextColor="#888"
+          placeholderTextColor={colors.grayPlaceholder}
+          onChangeText={setUserEmail}
+          value={userEmail}
         />
         <TextInput
           placeholder="Nome de Usuário"
           style={styles.input}
-          placeholderTextColor="#888"
+          placeholderTextColor={colors.grayPlaceholder}
+          onChangeText={setUserName}
+          value={userName}
         />
         <TextInput
           placeholder="Crie uma senha"
           style={styles.input}
           secureTextEntry
-          placeholderTextColor="#888"
+          placeholderTextColor={colors.grayPlaceholder}
+          onChangeText={setUserPassword}
+          value={userPassword}
         />
         <TextInput
           placeholder="Confirme a senha"
           style={styles.input}
           secureTextEntry
-          placeholderTextColor="#888"
+          placeholderTextColor={colors.grayPlaceholder}
+          onChangeText={setConfirmPassword}
+          value={confirmPassword}
         />
 
-        <TouchableOpacity style={styles.confirmButton}>
+        <TouchableOpacity style={styles.confirmButton} onPress={handleSubmit}>
           <Text style={styles.confirmText}>Confirmar</Text>
         </TouchableOpacity>
 
@@ -52,69 +84,9 @@ export default function Register() {
         >
           <Text style={styles.backText}>VOLTAR</Text>
         </TouchableOpacity>
+
+        {error !== "" && <Text style={styles.textError}>{error}</Text>}
       </View>
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: colors.whiteBackground,
-    paddingVertical: 40,
-    paddingHorizontal: 50,
-    justifyContent: "space-evenly",
-    gap: 20,
-  },
-  headerForm: {
-    width: "100%",
-    display: "flex",
-    gap: 20,
-    alignItems: "center",
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: "600",
-    marginBottom: 24,
-    color: colors.grayThin,
-  },
-  mainForm: {
-    marginBottom: 200,
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center"
-  },
-  input: {
-    width: "100%",
-    backgroundColor: "#e5e5e5",
-    borderRadius: 4,
-    paddingHorizontal: 12,
-    paddingVertical: 15,
-    marginBottom: 12,
-  },
-  confirmButton: {
-    backgroundColor: colors.orangeStrongHover,
-    width: "100%",
-    paddingVertical: 12,
-    borderRadius: 4,
-    alignItems: "center",
-    marginTop: 8,
-  },
-  confirmText: {
-    color: colors.white,
-    fontWeight: "600",
-  },
-  backButton: {
-    marginTop: 12,
-    paddingVertical: 8,
-    paddingHorizontal: 30,
-    borderColor: colors.orangeStrongHover,
-    borderWidth: 1,
-    borderRadius: 4,
-  },
-  backText: {
-    color: colors.orangeStrongHover,
-    fontWeight: "600",
-    fontSize: 12,
-  },
-});

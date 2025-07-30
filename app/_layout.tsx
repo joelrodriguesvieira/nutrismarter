@@ -2,6 +2,7 @@ import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import "react-native-reanimated";
+import { UserProvider } from "./contexts/useContext";
 
 export default function RootLayout() {
   const [loaded] = useFonts({
@@ -15,8 +16,10 @@ export default function RootLayout() {
 
   return (
     <>
-      <StatusBar style="auto" />
-      <Stack />
+      <UserProvider>
+        <StatusBar style="auto" />
+        <Stack />
+      </UserProvider>
     </>
   );
 }
