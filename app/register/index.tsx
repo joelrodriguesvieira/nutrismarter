@@ -1,5 +1,6 @@
 import LogoNutriSmarter from "@/components/Logo";
 import { useNavigation } from "@react-navigation/native";
+import { useRouter } from "expo-router";
 import { useState } from "react";
 import { Text, TextInput, TouchableOpacity, View } from "react-native";
 import colors from "../constants/colors";
@@ -15,6 +16,8 @@ export default function Register() {
     setUserEmail,
     setUserPassword,
   } = useUser();
+
+  const router = useRouter();
   const navigation = useNavigation();
   const [confirmPassword, setConfirmPassword] = useState<string>("");
   const [error, setError] = useState<string>("");
@@ -33,6 +36,7 @@ export default function Register() {
     // }
 
     // adicionar logica para a pagina 3
+    router.replace("/main");
   };
 
   return (
