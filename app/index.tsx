@@ -13,9 +13,9 @@ import {
 export default function InitialScreen() {
   const router = useRouter();
 
-  function handlePress() {
+  const handlePress = () => {
     router.push("/register");
-  }
+  };
 
   return (
     <SafeAreaView style={styles.container}>
