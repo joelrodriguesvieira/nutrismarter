@@ -1,5 +1,6 @@
 import LogoNutriSmarter from "@/components/Logo";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
+import { useRouter } from "expo-router";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import colors from "../constants/colors";
 import { useUser } from "../contexts/useContext";
@@ -7,6 +8,7 @@ import { styles } from "../register/register.style";
 
 export default function MainPage() {
   const { userName } = useUser();
+  const router = useRouter();
 
   return (
     <View style={styles.container}>
@@ -30,7 +32,10 @@ export default function MainPage() {
           <Text style={styles.confirmText}>Visualizar Dieta</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.confirmButton}>
+        <TouchableOpacity
+          style={styles.confirmButton}
+          onPress={() => router.push("/food-list")}
+        >
           <Text style={styles.confirmText}>Visualizar alimentos</Text>
         </TouchableOpacity>
       </View>
