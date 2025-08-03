@@ -24,7 +24,10 @@ export default function MainPage() {
       </View>
 
       <View style={styles.mainForm}>
-        <TouchableOpacity style={styles.confirmButton}>
+        <TouchableOpacity
+          style={styles.confirmButton}
+          onPress={() => router.push("/suggestion")}
+        >
           <Text style={styles.confirmText}>Receber sugestão</Text>
         </TouchableOpacity>
 
