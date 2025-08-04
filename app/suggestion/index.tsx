@@ -7,7 +7,10 @@ export default function ChooseMeal() {
   const router = useRouter();
 
   const handleSelectMeal = (mealTitle: string) => {
-    router.push(`/suggestion/${mealTitle}`);
+    router.push({
+      pathname: "/food-types",
+      params: { meal: mealTitle },
+    });
   };
 
   const meals = [
