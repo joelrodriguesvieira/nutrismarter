@@ -41,9 +41,10 @@ const MealDetailsScreen = () => {
 
     const foodMealIds = substituteOptions.map((food) => food.id);
     const finalMeal = {
-      title: meal,
+      title: `${meal} (${substituteOptions.map((f) => f.name).join(", ")})`,
       foodMealIds,
     };
+
 
     try {
       const response = await fetch(`${apiUrlBase}/meals`, {
@@ -77,7 +78,12 @@ const MealDetailsScreen = () => {
           style={styles.image}
         />
         <View style={styles.contentContainer}>
-          <Text style={styles.mealName}>{meal || "Nome da Refeição"}</Text>
+          <Text style={styles.mealName}>
+            {meal
+              ? `${meal} (${substituteOptions.map((f) => f.name).join(", ")})`
+              : "Nome da Refeição"}
+          </Text>
+
           <Text style={styles.totalKcal}>
             Total: {totalKcal.toFixed(0)} kcal
           </Text>
@@ -90,7 +96,9 @@ const MealDetailsScreen = () => {
               </Text>
             ))
           ) : (
-            <Text style={styles.ingredientItem}>Nenhum ingrediente original.</Text>
+            <Text style={styles.ingredientItem}>
+              Nenhum ingrediente original.
+            </Text>
           )}
 
           <Text style={[styles.ingredientsTitle, { marginTop: 20 }]}>
@@ -103,7 +111,9 @@ const MealDetailsScreen = () => {
               </Text>
             ))
           ) : (
-            <Text style={styles.ingredientItem}>Nenhum substituto encontrado.</Text>
+            <Text style={styles.ingredientItem}>
+              Nenhum substituto encontrado.
+            </Text>
           )}
 
           <View style={styles.buttonContainer}>
@@ -116,12 +126,15 @@ const MealDetailsScreen = () => {
               </Text>
             </TouchableOpacity>
             <TouchableOpacity
-              style={[styles.button, isSaving && { backgroundColor: colors.gray }]}
+              style={[
+                styles.button,
+                isSaving && { backgroundColor: colors.gray },
+              ]}
               onPress={handleAddMeal}
               disabled={isSaving}
             >
               <Text style={styles.buttonText}>
-                {isSaving ? 'SALVANDO...' : 'ADICIONAR COMO REFEIÇÃO'}
+                {isSaving ? "SALVANDO..." : "ADICIONAR COMO REFEIÇÃO"}
               </Text>
             </TouchableOpacity>
           </View>
