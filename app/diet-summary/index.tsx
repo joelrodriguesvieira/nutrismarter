@@ -59,7 +59,7 @@ const DietSummaryScreen = () => {
     const finalFoods = meal.foodMeals.map(item => item.food);
 
     router.push({
-      pathname: "/meal-details" as any,
+      pathname: "/view-new-diet",
       params: {
         meal: meal.title,
         originalFoods: JSON.stringify([]),
