@@ -1,4 +1,4 @@
-import LogoNutriSmarter from "@/components/Logo";
+import LogoNutriSmarter from "@/components/logo";
 import { useNavigation } from "@react-navigation/native";
 import { useRouter } from "expo-router";
 import { useState } from "react";

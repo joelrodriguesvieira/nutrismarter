@@ -13,6 +13,39 @@ export const styles = StyleSheet.create({
     padding: 16,
     paddingTop: 48,
   },
+  containerFood: {
+    flexDirection: "row",
+    alignItems: "center",
+    padding: 10,
+    backgroundColor: "#fff",
+    borderRadius: 10,
+    borderWidth: 2,
+    borderColor: "#eee",
+    marginBottom: 10,
+    elevation: 1,
+    shadowColor: "#000",
+    shadowOpacity: 0.05,
+    shadowRadius: 2,
+    shadowOffset: { width: 0, height: 1 },
+  },
+  centerContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    padding: 20,
+  },
+  errorText: {
+    color: "red",
+    fontSize: 16,
+    textAlign: "center",
+  },
+  infoContainer: {
+    flex: 1,
+    marginLeft: 10,
+  },
+  imagePlaceholder: {
+    backgroundColor: "#eee",
+  },
   searchInput: {
     flex: 1,
     backgroundColor: colors.whiteBackground,
@@ -26,43 +59,37 @@ export const styles = StyleSheet.create({
     fontSize: 20,
     marginLeft: 10,
   },
-  card: {
-    flexDirection: "row",
-    borderWidth: 1,
-    borderColor: colors.orangeStrongHover,
-    borderRadius: 8,
-    padding: 8,
-    paddingRight: 15,
-    marginBottom: 12,
-    alignItems: "center",
-    backgroundColor: colors.whiteBackground,
-  },
   image: {
     width: 60,
     height: 60,
-    borderRadius: 4,
-    marginRight: 12,
+    borderRadius: 8,
   },
   textContainer: {
     flex: 1,
   },
-  foodName: {
-    fontWeight: "bold",
+  name: {
     fontSize: 16,
+    fontWeight: "bold",
+    color: "#333",
   },
-  foodType: {
-    color: colors.grayThin,
+  category: {
     fontSize: 14,
+    color: "#888",
   },
   caloriesContainer: {
     alignItems: "center",
   },
-  kcalSmall: {
-    fontSize: 10,
-  },
-  kcalBig: {
-    fontSize: 18,
+  caloriesNumber: {
+    fontSize: 20,
     fontWeight: "bold",
-    color: "#000",
+    color: colors.orangePrimary,
+  },
+  caloriesText: {
+    fontSize: 12,
+    color: "#333",
+  },
+  portionText: {
+    fontSize: 10,
+    color: "#aaa",
   },
 });
