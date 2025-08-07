@@ -1,5 +1,5 @@
 import { styles } from "@/app/initial-screen.style";
-import LogoNutriSmarter from "@/components/Logo";
+import LogoNutriSmarter from "@/components/logo";
 import { useRouter } from "expo-router";
 import React from "react";
 import {

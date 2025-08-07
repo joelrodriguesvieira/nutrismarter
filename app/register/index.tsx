@@ -1,4 +1,4 @@
-import LogoNutriSmarter from "@/components/Logo";
+import LogoNutriSmarter from "@/components/logo";
 import { useNavigation } from "@react-navigation/native";
 import { useRouter } from "expo-router";
 import { useState } from "react";
@@ -23,19 +23,17 @@ export default function Register() {
   const [error, setError] = useState<string>("");
 
   const handleSubmit = () => {
-    // deixar sem nenhuma validacao por enquanto
-    // setError("");
-    // if (!userEmail || !userName || !userPassword) {
-    //   setError("Preencha todos os campos");
-    //   return;
-    // }
+    setError("");
+    if (!userEmail || !userName || !userPassword) {
+      setError("Preencha todos os campos");
+      return;
+    }
 
-    // if (confirmPassword !== userPassword) {
-    //   setError("Digite a mesma senha em ambos os campos");
-    //   return;
-    // }
+    if (confirmPassword !== userPassword) {
+      setError("Digite a mesma senha em ambos os campos");
+      return;
+    }
 
-    // adicionar logica para a pagina 3
     router.replace("/main");
   };
 

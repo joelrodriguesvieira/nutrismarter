@@ -1,46 +1,73 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from "react";
 import {
-  View,
-  Text,
-  TextInput,
   FlatList,
   Image,
+  Text,
+  TextInput,
   TouchableOpacity,
-} from 'react-native';
-import { styles } from './food-list.style';
-
-type Food = {
-  id: string;
-  name: string;
-  type: string;
-  calories: number;
-  imageUrl: string;
-};
+  View,
+} from "react-native";
+import { styles } from "./food-list.style";
+import { Food } from "@/data/foods";
 
 export default function FoodListScreen() {
-  const [search, setSearch] = useState('');
+  const [foodList, setFoodList] = useState<Food[]>([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  // Simulação de dados (serão substituídos por dados da API futuramente)
-  const foodList: Food[] = [
-    {
-      id: '1',
-      name: 'Alimento',
-      type: 'Categoria',
-      calories: 123,
-      imageUrl: 'https://via.placeholder.com/60',
-    },
-    {
-      id: '2',
-      name: 'Outro Alimento',
-      type: 'Outro Tipo',
-      calories: 456,
-      imageUrl: 'https://via.placeholder.com/60',
-    },
-  ];
+  useEffect(() => {
+    const apiUrlBase = process.env.EXPO_PUBLIC_API_URL;
+    if (!apiUrlBase) {
+      setError("A URL da API não está configurada.");
+      setIsLoading(false);
+      return;
+    }
 
-  const filteredList = foodList.filter(food =>
-    food.name.toLowerCase().includes(search.toLowerCase())
+    const fetchFoods = async () => {
+      setIsLoading(true);
+      setError(null);
+      try {
+        const apiUrl = `${apiUrlBase}/foods`;
+        const response = await fetch(apiUrl);
+
+        if (!response.ok) {
+          throw new Error(
+            "Não foi possível buscar os alimentos. Verifique se a API está rodando."
+          );
+        }
+
+        const data: Food[] = await response.json();
+        setFoodList(data);
+      } catch (err: any) {
+        setError(err.message || "Ocorreu um erro inesperado.");
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchFoods();
+  }, []);
+
+  const filteredList = foodList.filter((food) =>
+    food.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  if (isLoading) {
+    return (
+      <View style={styles.centerContainer}>
+        <Text>Carregando...</Text>
+      </View>
+    );
+  }
+
+  if (error) {
+    return (
+      <View style={styles.centerContainer}>
+        <Text style={styles.errorText}>{error}</Text>
+      </View>
+    );
+  }
 
   return (
     <View style={styles.container}>
@@ -49,34 +76,41 @@ export default function FoodListScreen() {
           placeholder="Buscar alimento"
           placeholderTextColor="#999"
           style={styles.searchInput}
-          value={search}
-          onChangeText={setSearch}
+          value={searchTerm}
+          onChangeText={setSearchTerm}
         />
-        <TouchableOpacity onPress={() => setSearch('')}>
+        <TouchableOpacity onPress={() => setSearchTerm("")}>
           <Text style={styles.clearText}>✕</Text>
         </TouchableOpacity>
       </View>
 
       <FlatList
         data={filteredList}
-        keyExtractor={item => item.id}
+        keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
-          <View style={styles.card}>
-            <Image source={{ uri: item.imageUrl }} style={styles.image} />
-            <View style={styles.textContainer}>
-              <Text style={styles.foodName}>{item.name}</Text>
-              <Text style={styles.foodType}>{item.type}</Text>
-            </View>
-            <View style={styles.caloriesContainer}>
-              <Text style={styles.kcalSmall}>em 100g</Text>
-              <Text style={styles.kcalBig}>{item.calories}</Text>
-              <Text style={styles.kcalSmall}>Kcal</Text>
-            </View>
-          </View>
+          <TouchableOpacity
+                style={styles.containerFood}
+              >
+                {item.imageUrl ? (
+                  <Image source={{ uri: item.imageUrl }} style={styles.image} />
+                ) : (
+                  <View style={[styles.image, styles.imagePlaceholder]} />
+                )}
+          
+                <View style={styles.infoContainer}>
+                  <Text style={styles.name}>{item.name}</Text>
+                  <Text style={styles.category}>{item.type}</Text>
+                </View>
+          
+                <View style={styles.caloriesContainer}>
+                  <Text style={styles.caloriesNumber}>{item.kcal}</Text>
+                  <Text style={styles.caloriesText}>Kcal</Text>
+                  <Text style={styles.portionText}>em 100g</Text>
+                </View>
+              </TouchableOpacity>
         )}
         contentContainerStyle={{ padding: 16 }}
       />
     </View>
   );
 }
-

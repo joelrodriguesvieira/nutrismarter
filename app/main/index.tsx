@@ -1,4 +1,4 @@
-import LogoNutriSmarter from "@/components/Logo";
+import LogoNutriSmarter from "@/components/logo";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { useRouter } from "expo-router";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
