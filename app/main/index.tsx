@@ -31,7 +31,10 @@ export default function MainPage() {
           <Text style={styles.confirmText}>Receber sugestão</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.confirmButton}>
+        <TouchableOpacity
+          style={styles.confirmButton}
+          onPress={() => router.push("/diet-summary" as any)}
+        >
           <Text style={styles.confirmText}>Visualizar Dieta</Text>
         </TouchableOpacity>
 
@@ -64,3 +67,5 @@ const styles2 = StyleSheet.create({
     marginBottom: 16,
   },
 });
+
+

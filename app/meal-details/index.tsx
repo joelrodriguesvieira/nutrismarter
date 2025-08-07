@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import colors from "../constants/colors";
 import { styles } from "./meal-details.style";
 
 const MealDetailsScreen = () => {
@@ -24,14 +25,46 @@ const MealDetailsScreen = () => {
 
   const totalKcal = originals.reduce((sum, food) => sum + (food.kcal || 0), 0);
 
+  const [isSaving, setIsSaving] = React.useState(false);
+
   const handleGoBack = () => {
     router.back();
   };
 
-  const handleAddMeal = () => {
-    router.push({
-        pathname: "/main",
+  const handleAddMeal = async () => {
+    setIsSaving(true);
+    const apiUrlBase = process.env.EXPO_PUBLIC_API_URL;
+    if (!apiUrlBase || !meal || substituteOptions.length === 0) {
+      setIsSaving(false);
+      return;
+    }
+
+    const foodMealIds = substituteOptions.map((food) => food.id);
+    const finalMeal = {
+      title: meal,
+      foodMealIds,
+    };
+
+    try {
+      const response = await fetch(`${apiUrlBase}/meals`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(finalMeal),
       });
+
+      if (!response.ok) {
+        throw new Error('Não foi possível salvar a refeição.');
+      }
+
+      router.push('/main');
+
+    } catch (error) {
+      console.error('Erro ao salvar refeição:', error);
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   return (
@@ -82,8 +115,14 @@ const MealDetailsScreen = () => {
                 VOLTAR
               </Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.button} onPress={handleAddMeal}>
-              <Text style={styles.buttonText}>ADICIONAR COMO REFEIÇÃO</Text>
+            <TouchableOpacity
+              style={[styles.button, isSaving && { backgroundColor: colors.gray }]}
+              onPress={handleAddMeal}
+              disabled={isSaving}
+            >
+              <Text style={styles.buttonText}>
+                {isSaving ? 'SALVANDO...' : 'ADICIONAR COMO REFEIÇÃO'}
+              </Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -93,6 +132,9 @@ const MealDetailsScreen = () => {
 };
 
 export default MealDetailsScreen;
+
+
+
 
 
 
