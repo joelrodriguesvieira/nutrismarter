@@ -1,4 +1,4 @@
-import { Food } from "@/data/foods"; // Usando o atalho @/ para consistência
+import { Food } from "@/data/foods";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import React, { useEffect, useMemo, useState } from "react";
 import {
@@ -22,6 +22,7 @@ export default function SuggestionResultScreen() {
   const [selectedFoods, setSelectedFoods] = useState<Food[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [isLoading, setIsLoading] = useState(true);
+  const [isFinalizing, setIsFinalizing] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -96,21 +97,57 @@ export default function SuggestionResultScreen() {
     );
   };
 
-  const handleFinalize = () => {
-    router.push({
-      pathname: "/final-summary",
-      params: {
-        meal: meal,
-        selectedFoods: JSON.stringify(selectedFoods),
-      },
-    });
+  const handleFinalize = async () => {
+    if (selectedFoods.length === 0) {
+      return;
+    }
+
+    setIsFinalizing(true);
+    setError(null);
+    try {
+      const apiUrlBase = process.env.EXPO_PUBLIC_API_URL;
+      if (!apiUrlBase) {
+        throw new Error("A URL da API não está configurada.");
+      }
+
+      const substitutePromises = selectedFoods.map(async (food) => {
+        const url = `${apiUrlBase}/foods/${food.id}/substitutes`;
+        const response = await fetch(url);
+        if (!response.ok) {
+          console.warn(`Não foi possível buscar substitutos para ${food.name} na URL: ${url}`);
+          return null;
+        }
+        const substitutes: Food[] = await response.json();
+        if (substitutes.length > 0) {
+          const randomIndex = Math.floor(Math.random() * substitutes.length);
+          return substitutes[randomIndex];
+        }
+        return null;
+      });
+
+      const results = await Promise.all(substitutePromises);
+      const allSubstitutes = results.filter((sub): sub is Food => sub !== null);
+
+      router.push({
+        pathname: "/meal-details" as any,
+        params: {
+          meal: meal,
+          originalFoods: JSON.stringify(selectedFoods),
+          substitutes: JSON.stringify(allSubstitutes),
+        },
+      });
+    } catch (err: any) {
+      setError(err.message || "Ocorreu um erro ao buscar substitutos.");
+    } finally {
+      setIsFinalizing(false);
+    }
   };
 
-  if (isLoading) {
+  if (isLoading || isFinalizing) {
     return (
       <View style={styles.centerContainer}>
         <ActivityIndicator size="large" color={colors.orangePrimary} />
-        <Text>Buscando alimentos...</Text>
+        <Text>{isFinalizing ? "Buscando substitutos..." : "Buscando alimentos..."}</Text>
       </View>
     );
   }
@@ -180,3 +217,8 @@ export default function SuggestionResultScreen() {
     </SafeAreaView>
   );
 }
+
+
+
+
+
