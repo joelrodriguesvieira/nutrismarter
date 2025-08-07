@@ -4,11 +4,11 @@ import { SafeAreaView, Text, TouchableOpacity, View } from "react-native";
 import { styles } from "./food-types-style";
 
 const FOOD_TYPES_BY_MEAL = {
-  "Café da manhã": ["Frutas", "Cereais", "Proteínas", "Laticínios"],
-  Almoço: ["Proteínas", "Verduras", "Leguminosas", "Cereais", "Grãos"],
-  Janta: ["Proteínas", "Verduras", "Leguminosas", "Cereais (opcional)"],
-  Lanche: ["Frutas", "Cereais", "Proteínas", "Oleaginosas"],
-  Ceia: ["Frutas", "Laticínios", "Chás"],
+  "Café da manhã": ["Frutas", "Cereais", "Proteinas", "Laticinios"],
+  "Almoço": ["Proteinas", "Verduras", "Leguminosas", "Graos"],
+  "Janta": ["Proteinas", "Verduras", "Leguminosas", "Graos"],
+  "Lanche": ["Frutas", "Cereais", "Proteinas", "Oleaginosas"],
+  "Ceia": ["Frutas", "Laticinios", "Chas", "Oleaginosas"],
 };
 
 export default function FoodTypesScreen() {
@@ -34,7 +34,15 @@ export default function FoodTypesScreen() {
   };
 
   const handleContinue = () => {
-    // logica para redirecionamento para outra pagina com dados coletados
+
+    router.push({
+      pathname: "/suggestion-result",
+
+      params: {
+        meal: mealKey, 
+        types: selectedTypes, 
+      },
+    });
   };
 
   return (
